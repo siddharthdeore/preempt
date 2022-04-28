@@ -116,9 +116,9 @@ PATCH_URL=${RTK_PATH}/${PATCH_COMPRESSED_FILE_NAME}
 echo ${info} Downloading patch ${UYellow}${PATCH_URL}${NC}
 #################################################################
 # downlad patch
-#wget ${PATCH_URL}
+wget ${PATCH_URL}
 # extract patch
-#gunzip ${PATCH_COMPRESSED_FILE_NAME}
+gunzip ${PATCH_COMPRESSED_FILE_NAME}
 PATCH_NAME=`echo ${PATCH_COMPRESSED_FILE_NAME%.gz}`
 #################################################################
 
@@ -131,21 +131,21 @@ SOURCE_URL=${KER_PATH}${KERN_FILE_NAME}
 echo ${info} Downloading kernel ${UYellow}${SOURCE_URL}${NC}
 #################################################################
 # download kernel source
-#wget ${SOURCE_URL}
+wget ${SOURCE_URL}
 # extract source
-#tar -xzf ${KERN_FILE_NAME}
+tar -xzf ${KERN_FILE_NAME}
 #################################################################
 KERN_DIR_NAME=`echo ${KERN_FILE_NAME%.tar.gz}`
 # change directory
 cd ${KERN_DIR_NAME}
 #################################################################
 # patch kernel
-#patch -p1 < ../${PATCH_NAME}
+patch -p1 < ../${PATCH_NAME}
 #################################################################
 # copy current configration settings
-#cp /boot/config-$(uname -r) .config
-#yes '' | make oldconfig
-#make menuconfig
+cp /boot/config-$(uname -r) .config
+yes '' | make oldconfig
+make menuconfig
 
 scripts/config --set-str CONFIG_SYSTEM_REVOCATION_KEYS ""
 scripts/config --set-str CONFIG_SYSTEM_TRUSTED_KEYS ""
