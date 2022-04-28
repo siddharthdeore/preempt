@@ -1,16 +1,15 @@
 #include <ThreadUtils/ThreadWrapper.h>
 #include <math.h>
 // some cpu intensive callable function
-void *callback_function()
+void* callback_function()
 {
     float x = 1.5f;
 
-    while (1)
-    {
+    while (1) {
         x *= sin(x) / atan(x) * tanh(x) * sqrt(x);
     }
 }
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     ThreadWrapper th1(callback_function);
 

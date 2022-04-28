@@ -1,24 +1,22 @@
 #include <ThreadUtils/ThreadWrapper.h>
 #include <math.h>
-
 #include <time.h>
 
-void *callback_function_hp()
+void* callback_function_hp()
 {
-    struct timespec time_requested,time_remaining;
+    struct timespec time_requested, time_remaining;
     time_requested.tv_sec = 0;
     time_requested.tv_nsec = 10000; // 10 milissec
 
     float x = 1.5f;
-    
-    while (1)
-    {
+
+    while (1) {
         x *= sin(x) / atan(x) * tanh(x) * sqrt(x);
         // need to sleep so lower priority threads get some cpu time
-        nanosleep(&time_requested,&time_remaining);
+        nanosleep(&time_requested, &time_remaining);
     }
 }
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     ThreadWrapper th1(callback_function_hp);
 
@@ -29,7 +27,6 @@ int main(int argc, char const *argv[])
 
     // set scheduling policy Round-Robin, priority 50
     th2.setPriority(SCHED_RR, 50);
-
 
     // wait for threads to finish
     th1.join();

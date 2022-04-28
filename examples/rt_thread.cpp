@@ -1,10 +1,10 @@
 #include <ThreadUtils/ThreadWrapper.h>
 #include <ThreadUtils/timer_math.h>
 
-void *non_real_time_function(void *arg);
-void *real_time_function(void *arg);
+void* non_real_time_function(void* arg);
+void* real_time_function(void* arg);
 
-int main(int argc, char const *argv[])
+int main(int argc, char const* argv[])
 {
     period_info info_rt;
     int rate = 1; // 1 Hz
@@ -33,13 +33,12 @@ int main(int argc, char const *argv[])
  * @param arg
  * @return void*
  */
-void *real_time_function(void *arg)
+void* real_time_function(void* arg)
 {
-    period_info *_p_info = (period_info *)arg;
+    period_info* _p_info = (period_info*)arg;
     double x = 1;
 
-    while (1)
-    {
+    while (1) {
         /* Code to be called periodicaly */
         std::cout << "RT Thread " << x++ << "\n";
 
@@ -54,13 +53,12 @@ void *real_time_function(void *arg)
  * @param arg
  * @return void*
  */
-void *non_real_time_function(void *arg)
+void* non_real_time_function(void* arg)
 {
-    period_info *_p_info = (period_info *)arg;
+    period_info* _p_info = (period_info*)arg;
     double x = 1;
 
-    while (1)
-    {
+    while (1) {
         /* Code to be called periodicaly */
         std::cout << "NRT Thread " << x++ << "\n";
 
