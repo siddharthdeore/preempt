@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.14)
 project(ThreadExamples)
 
+include_directories(../include)
+
 add_executable(cpu_affinity cpu_affinity.cpp )
 target_link_libraries(cpu_affinity ThreadWrapper)
 

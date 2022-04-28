@@ -19,9 +19,6 @@ int main(int argc, char const *argv[])
 
     ThreadWrapper th2(callback_function);
 
-    // set scheduling policy Round-Robin, priority 50
-    th2.setPriority(SCHED_RR, 50);
-
     // pin thread to CPU core 1
     th2.setAffinity(1);
 
