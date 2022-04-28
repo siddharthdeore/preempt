@@ -15,6 +15,7 @@ void ThreadWrapper::setPriority(int policy = SCHED_RR, int priority = 20)
     }
 }
 
+
 void ThreadWrapper::setAffinity(int core)
 {
     int nproc = sysconf(_SC_NPROCESSORS_ONLN);
@@ -41,3 +42,5 @@ void ThreadWrapper::setAffinity(int core)
 int ThreadWrapper::getMaxPriority() { return sched_get_priority_max(_policy); }
 
 int ThreadWrapper::getMinPriority() { return sched_get_priority_min(_policy); }
+
+int ThreadWrapper::nproc() { return sysconf(_SC_NPROCESSORS_ONLN); }

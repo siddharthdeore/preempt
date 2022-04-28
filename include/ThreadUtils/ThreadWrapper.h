@@ -57,6 +57,21 @@ public:
    */
     int getMinPriority();
 
+    /**
+   * @brief Get number of CPU cores
+   *
+   * @return int CPU core count
+   */
+    int nproc();
+
+    // Carefull!! This quick hack to impliment assignement is working for now.
+    ThreadWrapper& operator=(ThreadWrapper& __t)
+    {
+      thread::swap(__t);
+      return *this;
+    }
+
+
 private:
     // policy type
     int _policy = SCHED_OTHER;
