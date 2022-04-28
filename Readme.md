@@ -19,6 +19,12 @@ Execute example program with PREEMPT_RT
 cd ../bin
 sudo ./rt_thread
 ```
+Test CPU affinity (pin thread to core)
+```console
+./cpu_affinity
+```
+To verify CPU affinity use [htop](https://en.wikipedia.org/wiki/Htop) system monitor, cores which have thread pinned succussfully shall show 100% CPU consumption.
+
 
 
 # Troubleshoot

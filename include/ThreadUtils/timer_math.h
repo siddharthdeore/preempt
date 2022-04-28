@@ -108,23 +108,7 @@ static void wait_rest_of_period(struct period_info* pinfo)
     /* for simplicity, ignoring possibilities of signal wakes */
     clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &pinfo->next_deadline, NULL);
 }
-static void set_policy(const long policy)
-{
-    long min, max;
-    struct sched_param prio;
 
-    /*! Get priority range for "policy" */
-    min = sched_get_priority_min(policy);
-    max = sched_get_priority_max(policy);
-    std::cout << "min " << min << " \t max " << max << std::endl;
-    prio.sched_priority = max;
-
-    /*! give priority to current thhread */
-    if (pthread_setschedparam(pthread_self(), policy, &prio)) {
-        std::cout << "Error: pthread_setschedparam (root permission?)" << std::endl;
-        // exit (1);
-    }
-}
 }
 
 #endif
