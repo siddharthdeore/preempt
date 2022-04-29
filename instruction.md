@@ -232,11 +232,12 @@ Latency Plot
 
 
 # <a name="reference"></a> References
-1. [F. Reghenzani, The real-time Linux kernel: a Survey on PREEMPT_RT](https://re.public.polimi.it/retrieve/handle/11311/1076057/344112/paper.pdf)
-2. [A realtime preemption overview](https://lwn.net/Articles/146861/)
+1. [F. Reghenzani, The real-time Linux kernel: a Survey on PREEMPT_RT](https://web.archive.org/web/20210305000638/https://re.public.polimi.it/retrieve/handle/11311/1076057/344112/paper.pdf)
+2. [A realtime preemption overview](https://web.archive.org/web/20220126075157/https://lwn.net/Articles/146861/)
 3. [The Linux Foundation Real Time Linux](https://wiki.linuxfoundation.org/realtime/documentation/start)
-4. [Giuseppe Lipari, Lesson notes - Programming RT systems with pthreads](http://retis.sssup.it/~lipari/courses/str09/10.rtprogramming-handout.pdf)
+4. [Giuseppe Lipari, Lesson notes - Programming RT systems with pthreads](https://web.archive.org/web/20170517102136/http://retis.sssup.it/~lipari/courses/str09/10.rtprogramming-handout.pdf)
 5. [Frank Vasquez, Chris Simmonds, "Mastering Embedded Linux Programming".](https://books.google.it/books?id=4Hc5DwAAQBAJ&lpg=PP1&hl=it&pg=PP1#v=onepage&q&f=false)
+6. [P. Ficheux, Using real-time with Linux](https://web.archive.org/web/20210924153548/https://etr2021.ensma.fr/files/p-ficheux-realtime-linux.pdf)
 
 # Maintainers
 This repository is maintained by:
