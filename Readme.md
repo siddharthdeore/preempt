@@ -54,6 +54,18 @@ Select Advanced Tab
         Intel(R) Speed Shift Technology [Disable]
         HDC Control                     [Disable]
 ```
+⚠️ <b>Important (Only for Xenomai)</b>: Problems on [Xenomai](https://source.denx.de/Xenomai/xenomai/-/wikis/home) ipipe kernel  CPU affinity
+<p>
+To disable DWC features edit `/boot/cmdline.txt` and add following line.
+
+```console
+dwc_otg.fiq_enable=0 dwc_otg.fiq_fsm_enable=0 dwc_otg.nak_holdoff=0 
+```
+CPU affinity, edit `/boot/cmdline.txt`  and add following line.
+```console
+isolcpus=0,1 xenomai.supported_cpus=0x3
+```
+</p>
 
 
 # TODO
