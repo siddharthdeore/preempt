@@ -25,8 +25,21 @@ Test CPU affinity (pin thread to core)
 ```
 To verify CPU affinity use [htop](https://en.wikipedia.org/wiki/Htop) system monitor, cores which have thread pinned succussfully shall show 100% CPU consumption.
 
+# Tracing and diagnostic
+install kernel tracer tools trace-cmd and KernelShark 
+```console
+sudo apt-get install -y trace-cmd
+sudo apt-get install -y kernelshark
+```
+Trace CPU `sched_switch` event
+```console
+sudo trace-cmd record -e sched_switch ./rt_thread
+```
+Analize CPU trace with KernelShark GUI
 
-
+```console
+kernelshark trace.dat
+```
 # Troubleshoot
 
 Issue: Unexpected freeze issue on COM Express Type 6

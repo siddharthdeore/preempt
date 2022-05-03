@@ -19,10 +19,12 @@ int main(int argc, char const* argv[])
     periodic_timer_init(&info_nrt, 1e9 / (rate));
 
     ThreadWrapper nrt_thread(non_real_time_function, &info_nrt);
-    rt_thread.setPriority(SCHED_FIFO, 20);
-    rt_thread.setAffinity(0); // pin to core 1
+    nrt_thread.setPriority(SCHED_FIFO, 20);
+    nrt_thread.setAffinity(0); // pin to core 1
 
+    // wait for threads to finish
     rt_thread.join();
+    nrt_thread.join();
     /* code */
     return 0;
 }

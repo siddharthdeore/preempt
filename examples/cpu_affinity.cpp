@@ -7,6 +7,7 @@ void* callback_function()
 
     while (1) {
         x *= sin(x) / atan(x) * tanh(x) * sqrt(x);
+        usleep(1);
     }
 }
 int main(int argc, char const* argv[])
