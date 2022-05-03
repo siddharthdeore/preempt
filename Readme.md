@@ -40,6 +40,16 @@ Analize CPU trace with KernelShark GUI
 ```console
 kernelshark trace.dat
 ```
+<center>
+<img src="assets/kshark.png" width=640px>
+
+Fig: Kernelshark CPU trace for sched_switch event 
+
+<img src="assets/ksharkzoom.png" width=640px>
+
+Fig: Kernelshark sched_switch event ticks (zoom).
+</center>
+
 # Troubleshoot
 
 Issue: Unexpected freeze issue on COM Express Type 6

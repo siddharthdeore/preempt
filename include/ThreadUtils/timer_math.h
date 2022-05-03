@@ -27,6 +27,12 @@ static void periodic_task_init(struct period_info* pinfo, long period_ns);
 static void wait_rest_of_period(struct period_info* pinfo);
 static void set_policy(const long policy);
 
+/**
+ * @brief addd microseconds to timespec
+ *
+ * @param t
+ * @param us
+ */
 void timespec_add_us(struct timespec* t, long us)
 {
     t->tv_nsec += us * 1000;
@@ -34,6 +40,45 @@ void timespec_add_us(struct timespec* t, long us)
         t->tv_nsec = t->tv_nsec - 1000000000; // + ms*1000000;
         t->tv_sec += 1;
     }
+}
+
+/**
+ * @brief Wait thread to start before clock monotonic timer reaches next millisecond
+ *
+ */
+void sync_to_milisec()
+{ // Try to syncronize
+    timespec sync_t;
+    clock_gettime(CLOCK_MONOTONIC, &(sync_t));
+    // wait for remaining nanoseconds
+    // sync_t.tv_nsec = __syscall_slong_t(1000000000) - sync_t.tv_nsec;
+    // sync time till next millisecond
+    sync_t.tv_nsec = (sync_t.tv_nsec / 1000000) * 1000000 + 1000000;
+
+    while (sync_t.tv_nsec >= 1000000000) {
+        /* timespec nsec overflow */
+        sync_t.tv_sec++;
+        sync_t.tv_nsec -= 1000000000;
+    }
+
+    clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &sync_t, NULL);
+}
+
+/**
+ * @brief Wait thread to start before clock monotonic timer reaches next second
+ *
+ */
+void sync_to_sec()
+{
+    // Try to syncronize
+    timespec sync_t;
+    clock_gettime(CLOCK_MONOTONIC, &(sync_t));
+    // wait for remaining nanoseconds
+    sync_t.tv_nsec = __syscall_slong_t(1000000000) - sync_t.tv_nsec;
+    // sync time till next millisecond
+    sync_t.tv_sec += 1;
+
+    clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &sync_t, NULL);
 }
 
 int timespec_cmp(struct timespec* a, struct timespec* b)
@@ -55,7 +100,12 @@ int timespec_cmp(struct timespec* a, struct timespec* b)
 }
 
 /**
- * Substract timespec b from timespec a
+ * @brief Substract timespec b from timespec a
+ *
+ * @param diff
+ * @param a
+ * @param b
+ * @return int
  */
 int timespec_sub(struct timespec* diff, struct timespec* a,
     struct timespec* b)
@@ -69,7 +119,11 @@ int timespec_sub(struct timespec* diff, struct timespec* a,
     return 1;
 }
 
-// increment the timespec period info
+/**
+ * @brief increment the timespec period info
+ *
+ * @param pinfo
+ */
 static void increment_period(struct period_info* pinfo)
 {
     pinfo->next_deadline.tv_nsec += pinfo->period_ns;
@@ -108,7 +162,6 @@ static void wait_rest_of_period(struct period_info* pinfo)
     /* for simplicity, ignoring possibilities of signal wakes */
     clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &pinfo->next_deadline, NULL);
 }
-
 }
 
 #endif

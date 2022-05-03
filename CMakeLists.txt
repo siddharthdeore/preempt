@@ -19,6 +19,12 @@ if (WIN32)
 	SET( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 endif()
 
+execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory
+    ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/logs)
+execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink
+   ${CMAKE_CURRENT_SOURCE_DIR}/scripts/plot.py
+   ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/plot.py)
+
 include_directories(include)
 
 add_library(ThreadWrapper src/ThreadUtils/ThreadWrapper.cpp)

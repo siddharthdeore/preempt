@@ -14,3 +14,6 @@ target_link_libraries(thread_priority ThreadWrapper)
 
 add_executable(rt_thread rt_thread.cpp )
 target_link_libraries(rt_thread ThreadWrapper)
+
+add_executable(periodic_thread periodic_thread.cpp )
+target_link_libraries(periodic_thread ThreadWrapper)
