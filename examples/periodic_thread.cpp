@@ -10,11 +10,18 @@ void* real_time_function(void* arg);
 #include <signal.h>
 
 static std::atomic<bool> done(false); // signal flag
-
+static std::atomic<int64_t> x(10);
+std::mutex mtx;
 int main(int argc, char const* argv[])
 {
     // Ctrl + C signal handler with lambda
     signal(SIGINT, [](int sig_num) { done = true; });
+
+    struct timespec _rqtp;
+    clock_gettime(CLOCK_REALTIME, &_rqtp);
+    _rqtp.tv_nsec = 0;
+    _rqtp.tv_sec += 1;
+    clock_nanosleep(CLOCK_REALTIME, TIMER_ABSTIME, &_rqtp, NULL);
 
     period_info info_rt;
     int rate = 1000; // 1 kHz
@@ -22,7 +29,7 @@ int main(int argc, char const* argv[])
 
     ThreadWrapper rt_thread1k(real_time_function, &info_rt);
     rt_thread1k.setPriority(SCHED_FIFO, 99);
-    rt_thread1k.setAffinity(0); // pin to core 0
+    rt_thread1k.setAffinity(1); // pin to core 0
 
     period_info info_nrt;
     rate = 5000; // 5 kHz
@@ -51,37 +58,34 @@ int main(int argc, char const* argv[])
  */
 void* real_time_function(void* arg)
 {
-    period_info* _p_info = (period_info*)arg;
-    double x = 1.5;
-    timespec sync_t;
-    // get current time
-    clock_gettime(CLOCK_MONOTONIC, &(sync_t));
-
-    // wait for remaining nanoseconds
-    // sync_t.tv_nsec = __syscall_slong_t(1000000000) - sync_t.tv_nsec;
-    // sync time till next millisecond
-    sync_t.tv_nsec = (sync_t.tv_nsec / 10000000) * 10000000 + 10000000;
-
-    while (sync_t.tv_nsec >= 1000000000) {
-        /* timespec nsec overflow */
-        sync_t.tv_sec++;
-        sync_t.tv_nsec -= 1000000000;
-    }
-
-    clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &sync_t, NULL);
     // initalize time stamp looger file
     TimeStampLogger t_stamp_log("logs/rt1k.txt");
+    period_info* _p_info = (period_info*)arg;
+
+    // static double x;
+
+    period_info info_rt;
+
+    // syncronize time
+    clock_gettime(CLOCK_MONOTONIC, &(_p_info->next_deadline));
+    //_p_info->next_deadline.tv_nsec = 1000000000 - _p_info->next_deadline.tv_nsec;
+    _p_info->next_deadline.tv_nsec = 0;
+    _p_info->next_deadline.tv_sec += 1;
+    clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &_p_info->next_deadline, NULL);
 
     while (!done) {
+        t_stamp_log.stamp();
         /* Code to be called periodicaly */
         // std::cout << "RT Thread " << x++ << "\n";
-        for (size_t i = 0; i < 100; i++) {
-            x *= sin(x) / atan(x) * tanh(x) * sqrt(x);
-        }
+        mtx.lock();
+        x = x - 5;
+        mtx.unlock();
         // give other threads some cpu time
         wait_rest_of_period(_p_info);
-        t_stamp_log.stamp();
     }
+
+    std::lock_guard<std::mutex> guard(mtx);
+    std::cout << "x in rt is " << x << std::endl;
     return 0;
 }
 
@@ -93,33 +97,33 @@ void* real_time_function(void* arg)
  */
 void* non_real_time_function(void* arg)
 {
-    period_info* _p_info = (period_info*)arg;
-    double x = 1.5;
-
-    timespec sync_t;
-    clock_gettime(CLOCK_MONOTONIC, &(sync_t));
-    // wait for remaining nanoseconds
-    // sync_t.tv_nsec = __syscall_slong_t(1000000000) - sync_t.tv_nsec;
-    // sync time till next millisecond
-    sync_t.tv_nsec = (sync_t.tv_nsec / 10000000) * 10000000 + 10000000;
-
-    while (sync_t.tv_nsec >= 1000000000) {
-        /* timespec nsec overflow */
-        sync_t.tv_sec++;
-        sync_t.tv_nsec -= 1000000000;
-    }
-
-    clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &sync_t, NULL);
     TimeStampLogger t_stamp_log("logs/rt5k.txt");
+    period_info* _p_info = (period_info*)arg;
+
+    // static double x;
+
+    // syncronize time
+    clock_gettime(CLOCK_MONOTONIC, &(_p_info->next_deadline));
+    //_p_info->next_deadline.tv_nsec = 1000000000 - _p_info->next_deadline.tv_nsec;
+    _p_info->next_deadline.tv_nsec = 0;
+    _p_info->next_deadline.tv_sec += 1;
+    clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &_p_info->next_deadline, NULL);
 
     while (!done) {
+        t_stamp_log.stamp();
         /* Code to be called periodicaly */
         // std::cout << "NRT Thread " << x++ << "\n";
-        x *= sin(x) / atan(x) * tanh(x) * sqrt(x);
+        // for (size_t i = 0; i < 400; i++) {
+        mtx.lock();
+        x = x + 1;
+        mtx.unlock();
+
+        //}
 
         // give other threads some cpu time
         wait_rest_of_period(_p_info);
-        t_stamp_log.stamp();
     }
+    std::lock_guard<std::mutex> guard(mtx);
+    std::cout << "x in nrt is " << x << std::endl;
     return 0;
 }
