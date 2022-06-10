@@ -112,20 +112,19 @@ reboot
 
 uname -a
 ```
-# Step 5: CPU Isolation
-To isolate CPU add following line to  `/boot/cmdline.txt`
+# Step 5: Isolate CPUs from the kernel scheduler.
+Remove the given CPUs, as indicated by the cpu number values, from the general kernel SMP balance and scheduler algorithms. The CPU affinity syscalls are the sole mechanism to transfer a process onto or off of a "isolated" CPU. To do so add following line to  `/boot/cmdline.txt`
 ``` sh
-# https://rt-labs.com/docs/p-net/linuxtiming.html
 isolcpus=3      # isolate the CPU nr 3
 # or
-isolcpus=1,2,3  # isolate the CPUs nr 1, 2 & 3
+isolcpus=1-3  # isolate the CPUs nr 1, 2 & 3
 ```
-define the affinity of interruptions to a specific CPU type e.g.:
+establish the perticular interrupt's affinity towards a specific CPU type  e.g.:
 ```sh
 sudo echo 3 > /proc/irq/62/smp_affinity
 sudo echo 3 > /proc/irq/62/smp_affinity_list
 ```
-check which inttrupts are getting scheduled and which CP is answering these interrupts
+Examine which interruptions are being scheduled and which CPU is responding to them.
 ```sh
 cat /proc/interrupts
 ```

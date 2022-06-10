@@ -84,7 +84,9 @@ To disable DWC features edit `/boot/cmdline.txt` and add following line.
 ```console
 dwc_otg.fiq_enable=0 dwc_otg.fiq_fsm_enable=0 dwc_otg.nak_holdoff=0 
 ```
-CPU affinity, edit `/boot/cmdline.txt`  and add following line.
+## CPU Isolation (Xenomai)
+Remove the CPU 0 and CPU 1 from the general kernel SMP balance and scheduler algorithms. To do so add following line to  `/boot/cmdline.txt`
+
 ```console
 isolcpus=0,1 xenomai.supported_cpus=0x3
 ```
