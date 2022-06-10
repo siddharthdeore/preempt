@@ -31,8 +31,8 @@ public:
         _logfile.open(_filename);
         for (const auto& value : _vec) {
             _logfile << std::setprecision(std::numeric_limits<long double>::digits10)
-                     << timespec_to_second(value)<< "\n";
-                     //<< timespec_to_second(value) - init_time_in_sec << "\n";
+                     << timespec_to_second(value) << "\n";
+            //<< timespec_to_second(value) - init_time_in_sec << "\n";
         }
         _logfile.close();
     }

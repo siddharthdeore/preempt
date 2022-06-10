@@ -26,51 +26,54 @@ public:
     // make sure we inherit all constructors
     using thread::thread;
     /**
-   * @brief Set thread scheduling policy and priority
-   * possible policies :
-   *      SCHED_BATCH, SCHED_DEADLINE, SCHED_FIFO, SCHED_IDLE, SCHED_ISO,
-   * SCHED_OTHER, SCHED_RESET_ON_FORK, SCHED_RR
-   *
-   * @param policy
-   * @param priority
-   */
+     * @brief Set thread scheduling policy and priority
+     * possible policies :
+     *      SCHED_BATCH, SCHED_DEADLINE, SCHED_FIFO, SCHED_IDLE, SCHED_ISO,
+     * SCHED_OTHER, SCHED_RESET_ON_FORK, SCHED_RR
+     *
+     * @param policy
+     * @param priority
+     */
     void setPriority(int policy, int priority);
-
+    ~ThreadWrapper()
+    {
+        if (joinable())
+            std::terminate();
+    }
     /**
-   * @brief Pin thread to specific processsor core
-   *
-   * @param core processsor core number
-   */
+     * @brief Pin thread to specific processsor core
+     *
+     * @param core processsor core number
+     */
     void setAffinity(int core);
 
     /**
-   * @brief Get the Max Priority possible
-   *
-   * @return int maximum priority
-   */
+     * @brief Get the Max Priority possible
+     *
+     * @return int maximum priority
+     */
     int getMaxPriority();
 
     /**
-   * @brief Get the Min Priority possible
-   *
-   * @return int minimum priority
-   */
+     * @brief Get the Min Priority possible
+     *
+     * @return int minimum priority
+     */
     int getMinPriority();
 
     /**
-   * @brief Get number of CPU cores
-   *
-   * @return int CPU core count
-   */
+     * @brief Get number of CPU cores
+     *
+     * @return int CPU core count
+     */
     int nproc();
 
     // Carefull!! This quick hack to impliment assignement is working for now.
     ThreadWrapper& operator=(ThreadWrapper& __t)
     {
-      thread::swap(__t);
-      return *this;
+        thread::swap(__t);
+        return *this;
     }
-
 
 private:
     // policy type

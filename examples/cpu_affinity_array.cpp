@@ -1,7 +1,7 @@
 #include <ThreadUtils/ThreadWrapper.h>
 #include <math.h>
 // some cpu intensive callable function
-void* callback_function()
+void* callback_function(void* arg)
 {
     float x = 1.5f;
 
@@ -16,9 +16,10 @@ int main(int argc, char const* argv[])
         count = atoi(argv[1]);
     }
     ThreadWrapper th[count];
+    int x;
     for (size_t i = 0; i < count; i++)
     {
-        ThreadWrapper temp(callback_function);
+        ThreadWrapper temp(callback_function,&x);
         th[i] = temp;
         // pin thread to CPU core i
         th[i].setAffinity(i);
