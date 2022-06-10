@@ -23,7 +23,11 @@ Test CPU affinity (pin thread to core)
 ```console
 ./cpu_affinity
 ```
-To verify CPU affinity use [htop](https://en.wikipedia.org/wiki/Htop) system monitor, cores which have thread pinned succussfully shall show 100% CPU consumption.
+To check CPU affinity use [htop](https://en.wikipedia.org/wiki/Htop) system monitor, cores which have thread pinned succussfully shall show 100% CPU consumption.
+Or use `taskset` to check on which CPU core a process running 
+```
+taskset -c -p $(pidof cpu_affinity)
+```
 
 # Tracing and diagnostic
 install kernel tracer tools trace-cmd and KernelShark 
