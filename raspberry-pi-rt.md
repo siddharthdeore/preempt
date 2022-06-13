@@ -87,7 +87,9 @@ cd $INSTALL_MOD_PATH
 tar czf ../rt-kernel.tgz *
 cd ..
 
+```
 # Step 5: Installing New Kernel
+```sh
 # secure copy kernel archive to raspberi pi
 
 scp rt-kernel.tgz pi@<ipaddress>:/tmp
@@ -105,14 +107,14 @@ cd ../overlays
 sudo cp -dr * /boot/overlays
 cd ../broadcom
 sudo cp -dr bcm* /boot/
-# edit /boot/config.txt file and add following line.
+# add following line to `/boot/config.txt`.
 # kernel=kernel8.img
 
 reboot
 
 uname -a
 ```
-# Step 5: Isolate CPUs from the kernel scheduler.
+# Step 6: Isolate CPUs from the kernel scheduler.
 Remove the given CPUs, as indicated by the cpu number values, from the general kernel SMP balance and scheduler algorithms. The CPU affinity syscalls are the sole mechanism to transfer a process onto or off of a "isolated" CPU. To do so add following line to  `/boot/cmdline.txt`
 ``` sh
 isolcpus=3      # isolate the CPU nr 3
