@@ -2,7 +2,7 @@
 Example implementaion of real time threads with wrapper for POSIX thread.
 
 # Prerequisite
-<b>⚠️ NOTE:</b> Make sure you have already patched PREEMPT_RT kernel, follow [instruction.md](instruction.md) to patch and install.
+<b>⚠️ NOTE:</b> Make sure you have already patched `PREEMPT_RT` kernel, follow [instruction.md](instruction.md) to patch and install. To patch Raspberry PI 4 kernel with `PREEMPT_RT` follow  instructions from [raspberry-pi-rt.md](raspberry-pi-rt.md)
 
 # Building real time periodic thread
 Download the source code and compile
