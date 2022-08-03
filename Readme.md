@@ -9,7 +9,7 @@ Download the source code and compile
 ```console
 git clone https://github.com/siddharthdeore/preempt.git
 cd preempt
-mkdir build
+mkdir build && cd build
 cmake ..
 make
 ```
