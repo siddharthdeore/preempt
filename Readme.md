@@ -81,19 +81,28 @@ Select Advanced Tab
         Intel(R) Speed Shift Technology [Disable]
         HDC Control                     [Disable]
 ```
+
 ⚠️ <b>Important (Only for Xenomai)</b>: Problems on [Xenomai](https://source.denx.de/Xenomai/xenomai/-/wikis/home) ipipe kernel  CPU affinity
 <p>
-To disable DWC features edit `/boot/cmdline.txt` and add following line.
-
+Current kernel `cmdline` flags can be checked with following command,
+```console
+cat /proc/cmdline 
+```
+To disable DWC features add following flags to kernel cmdline
 ```console
 dwc_otg.fiq_enable=0 dwc_otg.fiq_fsm_enable=0 dwc_otg.nak_holdoff=0 
 ```
 ## CPU Isolation (Xenomai)
-Remove the CPU 0 and CPU 1 from the general kernel SMP balance and scheduler algorithms. To do so add following line to  `/boot/cmdline.txt`
+Remove the CPU 0 and CPU 1 from the general kernel SMP balance and scheduler algorithms.
 
 ```console
 isolcpus=0,1 xenomai.supported_cpus=0x3
+# above line isolates cpu 0 and 1 from SMP balance, and set xenomai supported cpu mask to 0011
 ```
+To set flags edit `/etc/default/grub` and add flags to GRUB_CMDLINE_LINUX_DEFAULT, finaly update grub with `sudo update-grub`
+
+
+RPI : flags can be set by adding above lines to `/boot/cmdline.txt`,  
 </p>
 
 
