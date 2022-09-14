@@ -120,7 +120,7 @@ Configure following settings by navigating GUI menu
 
 
 
-In your kernel configuration file spesificaly when compiling on Ubuntu (debian) you will find this line:
+In your kernel configuration file spesificaly when compiling on Ubuntu (debian)to avoid any error during compilation process related to SYSTEM_TRUSTED_KEYS and CONFIG_SYSTEM_REVOCATION_KEYS  update following lines:
 
 ```console
 CONFIG_SYSTEM_TRUSTED_KEYS="debian/canonical-certs.pem"
@@ -131,15 +131,14 @@ Change it to this:
 CONFIG_SYSTEM_TRUSTED_KEYS=""
 CONFIG_SYSTEM_REVOCATION_KEYS=""
 ```
-
-if you see any error related to SYSTEM_TRUSTED_KEYS try following
+Instead of manually editing, you can also update above configs by running following commands,
 
 ```console
-scripts/config --disable SYSTEM_TRUSTED_KEYS
-scripts/config --disable SYSTEM_REVOCATION_KEYS
+scripts/config --set-str SYSTEM_TRUSTED_KEYS ""
+scripts/config --set-str SYSTEM_REVOCATION_KEYS ""
 ```
 
-Compile Kernel source file with -jX flag, here X nuber of core
+Compile Kernel source file with -jX flag, here X number of core
 ```console
 sudo make -j20
 ```
