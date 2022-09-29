@@ -85,6 +85,7 @@ Select Advanced Tab
 ⚠️ <b>Important (Only for Xenomai)</b>: Problems on [Xenomai](https://source.denx.de/Xenomai/xenomai/-/wikis/home) ipipe kernel  CPU affinity
 <p>
 Current kernel `cmdline` flags can be checked with following command,
+
 ```console
 cat /proc/cmdline 
 ```
